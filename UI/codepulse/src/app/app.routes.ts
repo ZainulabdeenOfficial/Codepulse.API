@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
-import { CetagoreyList } from './features/Cetagorey/cetagorey-list/cetagorey-list';
+import { CetagoreyListComponent } from './features/Cetagorey/cetagorey-list/cetagorey-list';
+import { AddCategorey } from './features/Cetagorey/add-categorey/add-categorey';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/admin/category', pathMatch: 'full' },
-  { path: 'admin/category', component: CetagoreyList },
-  { path: '**', redirectTo: '/admin/category' }
+  { path: 'admin/category', component: CetagoreyListComponent },
+  { path: 'admin/category/add', component: AddCategorey },
+  
 ];
 
 
