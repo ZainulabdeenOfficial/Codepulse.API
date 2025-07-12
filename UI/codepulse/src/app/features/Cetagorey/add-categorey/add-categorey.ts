@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AddCetagoryRequest } from '../models/add-cetagory-request.model';
 import { Cetagorey } from '../Services/cetagorey';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-categorey',
@@ -12,8 +13,10 @@ import { Cetagorey } from '../Services/cetagorey';
   templateUrl: './add-categorey.html',
   styleUrl: './add-categorey.css'
 })
-export class AddCategorey {
+export class AddCategorey implements OnDestroy {
   model : AddCetagoryRequest;
+
+  AddCetagorySubscription ? : Subscription
 
    constructor(private CategoreyService: Cetagorey) {
     this.model = {
@@ -21,9 +24,9 @@ export class AddCategorey {
       UrlHandle : '',
     };
    }
-
+ 
    onSubmit() {
-    this.CategoreyService.AddCategorey(this.model).subscribe({
+       this.AddCetagorySubscription=  this.CategoreyService.AddCategorey(this.model).subscribe({
       next: () => {
         console.log('Categorey added successfully');
         // Optionally, you can reset the form or navigate to another page
@@ -36,5 +39,8 @@ export class AddCategorey {
 
    }
 
+ ngOnDestroy(): void {
+    this.AddCetagorySubscription?.unsubscribe();
+  }
 
 }

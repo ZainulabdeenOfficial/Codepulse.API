@@ -24,5 +24,11 @@ namespace Codepulse.API.Repositories.Implementation
 
             return catogrey;
         }
+
+        public async Task<IEnumerable<Catogrey>> GetAllAsync()
+        {
+            return await dbContext.Categories.ToListAsync();
+                
+        }
     }
 }

@@ -4,6 +4,7 @@ using Codepulse.API.Models.DTO;
 using Codepulse.API.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Immutable;
 
 namespace Codepulse.API.Controllers
 {
@@ -57,5 +58,31 @@ namespace Codepulse.API.Controllers
 
         }
 
+
+        //Get Method: localhost:5000/api/categories
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var Cetagories = await categoeryRepository.GetAllAsync();
+            // Map domain model to DTO
+            var response = new List<CetogreyDto>();
+
+            foreach (var catogrey in Cetagories)
+            {
+                response.Add(new CetogreyDto
+                {
+                    Id = catogrey.Id,
+                    Name = catogrey.Name,
+                    UrlHandle=catogrey.UrlHandle
+
+                });
+
+
+            }
+            return Ok(response);
+
+        }
+
     }
+
 }
