@@ -1,19 +1,41 @@
-import { Component } from '@angular/core';
-import { AddCategorey } from '../add-categorey/add-categorey';
+import { Component, OnInit, ChangeDetectorRef, afterNextRender } from '@angular/core';
 import { RouterModule } from '@angular/router'; 
-import { AddCetagoryRequest } from '../models/add-cetagory-request.model';
-import { HttpClient } from '@angular/common/http';
+import { Categorey } from '../models/Cetagorey.model';
+import { Cetagorey } from '../Services/cetagorey';
 
 @Component({
   selector: 'app-cetagorey-list',
-  
-  imports:[RouterModule],
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './cetagorey-list.html',
   styleUrl: './cetagorey-list.css'
 })
-export class CetagoreyListComponent {
+export class CetagoreyListComponent implements OnInit {
 
-   
+  cetagories: Categorey[] = [];
 
+  constructor(private CetogreyServices: Cetagorey, private cdr: ChangeDetectorRef) {
+    // Handle hydration properly
+    afterNextRender(() => {
+      this.loadCategories();
+    });
+  }
+  
+  ngOnInit(): void {
+    this.loadCategories();
+  }
 
+  private loadCategories(): void {
+    this.CetogreyServices.GetAllCategorey().subscribe({
+      next: (response) => {
+        this.cetagories = response;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    });
+  }
 }
+
+

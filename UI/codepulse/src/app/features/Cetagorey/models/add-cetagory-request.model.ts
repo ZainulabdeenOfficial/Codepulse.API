@@ -1,6 +1,4 @@
 export interface AddCetagoryRequest {   
-   
-name: string;
-UrlHandle : string;
-
+    name: string;
+    urlHandle: string;
 }
