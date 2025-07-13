@@ -7,5 +7,7 @@ namespace Codepulse.API.Repositories.Interface
         Task<Catogrey> CreateAysnc(Catogrey catogrey);
 
         Task <IEnumerable<Catogrey>> GetAllAsync();
+
+        Task<Catogrey?> GetByID(Guid id);
     }
 }

@@ -30,7 +30,7 @@ namespace Codepulse.API.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> CreateCatogrey( CreateCategoryRequestDto request)
+        public async Task<IActionResult> CreateCatogrey([FromBody] CreateCategoryRequestDto request)
         {
 
             //Map DTO to domain model 
@@ -79,6 +79,28 @@ namespace Codepulse.API.Controllers
 
 
             }
+            return Ok(response);
+
+        }
+        //Get Method: localhost:5000/api/categories/{id}
+
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetCetagoreyById([FromRoute] Guid id)
+        {
+
+            var ExistingCetagorey = await categoeryRepository.GetByID(id);
+
+            if (ExistingCetagorey is null)
+            {
+                return NotFound();
+            }
+            var response = new CetogreyDto
+            {
+                Id = id,
+                Name = ExistingCetagorey.Name,
+                UrlHandle = ExistingCetagorey.UrlHandle
+            };
+
             return Ok(response);
 
         }
