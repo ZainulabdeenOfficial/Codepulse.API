@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, afterNextRender } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router'; 
 import { Categorey } from '../models/Cetagorey.model';
 import { Cetagorey } from '../Services/cetagorey';
@@ -15,25 +15,25 @@ export class CetagoreyListComponent implements OnInit {
   cetagories: Categorey[] = [];
 
   constructor(private CetogreyServices: Cetagorey, private cdr: ChangeDetectorRef) {
-    // Handle hydration properly
-    afterNextRender(() => {
-      this.loadCategories();
-    });
   }
   
   ngOnInit(): void {
-    this.loadCategories();
-  }
-
-  private loadCategories(): void {
+    console.log('ngOnInit called - loading categories...');
     this.CetogreyServices.GetAllCategorey().subscribe({
       next: (response) => {
-        this.cetagories = response;
+        console.log('Categories loaded:', response);
+        this.cetagories = response || [];
+        console.log('Categories array length:', this.cetagories.length);
         this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error fetching categories:', error);
+        this.cetagories = [];
       }
     });
   }
+
+
+
+
 }

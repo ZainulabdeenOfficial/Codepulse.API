@@ -1,1 +1,50 @@
-<p>edit-cetagorey works!</p>
+<div class="container">
+    <h1 class="mt-3">Edit Category</h1>
+    
+    @if(category) {
+        <form #form="ngForm" (ngSubmit)="onSubmit()" class="mt-3">
+            <div class="mt-3">
+                <label for="categoryID">Category ID</label>
+                <input type="text" 
+                       disabled 
+                       id="categoryID" 
+                       class="form-control" 
+                       name="categoryID" 
+                       [(ngModel)]="category.id">
+            </div>
+
+            <div class="mt-3">
+                <label for="categoryName">Category Name</label>
+                <input type="text" 
+                       id="categoryName" 
+                       class="form-control" 
+                       name="categoryName" 
+                       [(ngModel)]="category.name"
+                       required>
+            </div>
+
+            <div class="mt-3">
+                <label for="categoryUrlHandle">Category URL Handle</label>
+                <input type="text" 
+                       id="categoryUrlHandle" 
+                       class="form-control" 
+                       name="categoryUrlHandle" 
+                       [(ngModel)]="category.urlHandle"
+                       required>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary me-2">Update Category</button>
+                <button type="button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    } @else if(errorMessage) {
+        <div class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+        </div>
+    } @else {
+        <div class="alert alert-warning" role="alert">
+            Category not found or invalid ID.
+        </div>
+    }
+</div>

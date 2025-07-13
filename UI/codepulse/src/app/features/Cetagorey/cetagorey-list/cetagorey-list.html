@@ -12,23 +12,25 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>URL Handle</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @for (category of cetagories; track category.id) {
                     <tr>
                         <td>{{ category.id }}</td>
-                        <td>{{ category.name }}</td>
-                        <td>{{ category.urlHandle }}</td>
+                        <td>{{ category.name || 'No Name' }}</td>
+                        <td>{{ category.urlHandle || 'No URL Handle' }}</td>
                         <td>
-                            <a  class="btn btn-light" [routerLink]="['/admin/cetagories',category.id]">Edit</a>
+                            <a class="btn btn-light" [routerLink]="['/admin/category/',category.id]">Edit</a>
                         </td>
                     </tr>
-                    
-                    
-                    
                 }
             </tbody>
         </table>
+    } @else {
+        <div class="alert alert-info mt-3">
+            <p>No categories found. <a [routerLink]="['/admin/category/add']" class="alert-link">Create your first category</a></p>
+        </div>
     } 
 </div>
