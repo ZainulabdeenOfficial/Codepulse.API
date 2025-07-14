@@ -9,5 +9,8 @@ namespace Codepulse.API.Repositories.Interface
         Task <IEnumerable<Catogrey>> GetAllAsync();
 
         Task<Catogrey?> GetByID(Guid id);
+
+      Task<Catogrey?>  Updateasync(Catogrey catogrey);
+
     }
 }

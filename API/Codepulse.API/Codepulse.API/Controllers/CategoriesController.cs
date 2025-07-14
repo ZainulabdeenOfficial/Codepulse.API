@@ -1,6 +1,7 @@
 ﻿using Codepulse.API.Data;
 using Codepulse.API.Models.Domain;
 using Codepulse.API.Models.DTO;
+using Codepulse.API.Repositories.Implementation;
 using Codepulse.API.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,7 @@ namespace Codepulse.API.Controllers
                 UrlHandle = request.UrlHandle,
             };
 
-             await categoeryRepository.CreateAysnc(catogrey);
+            await categoeryRepository.CreateAysnc(catogrey);
 
             // Domain model to DTO
 
@@ -73,7 +74,7 @@ namespace Codepulse.API.Controllers
                 {
                     Id = catogrey.Id,
                     Name = catogrey.Name,
-                    UrlHandle=catogrey.UrlHandle
+                    UrlHandle = catogrey.UrlHandle
 
                 });
 
@@ -105,6 +106,37 @@ namespace Codepulse.API.Controllers
 
         }
 
-    }
+    
+    //put method : localhost:5000/api/categories/{id}
+    [HttpPut("{id:guid}")]
 
+        public async Task<IActionResult> EditCetagorey([FromRoute] Guid id, updateCetogreyRequestDto request) {
+
+            // Convert dto to domain model 
+            var Cetagorey = new Catogrey
+            {
+                Id = id,
+                Name = request.Name,
+                UrlHandle = request.UrlHandle
+            };
+
+            await categoeryRepository.Updateasync(Cetagorey);
+            if (Cetagorey is null)
+            {
+                return NotFound();
+            }
+            // Map domain model to DTO
+            var response = new CetogreyDto
+            {
+                Id = id,
+                Name = Cetagorey.Name,
+                UrlHandle = Cetagorey.UrlHandle
+            };
+            return Ok(response);
+
+
+        }
+
+
+    }
 }

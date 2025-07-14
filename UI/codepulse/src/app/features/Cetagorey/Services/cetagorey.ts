@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Categorey } from '../models/Cetagorey.model';
 import { environment } from '../../../../environments/environment';
 import { tap, catchError, timeout } from 'rxjs/operators';
+import { UpdateCetogreyRequest } from '../models/Update-Cetgory-Request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -57,28 +58,13 @@ GetCategoreyById(id: string): Observable<Categorey> {
     );
 }
 
-UpdateCategorey(id: string, model: Categorey): Observable<void> {
-  console.log('🔍 Updating category with ID:', id);
-  console.log('🌐 API URL:', `${environment.ApiBaseUrl}/api/Categories`);
-  console.log('📝 Update data:', model);
-  
-  // Try using the same endpoint as add but with the ID included in the model
-  const updateModel = { ...model, id: id };
-  
-  return this.http.post<void>(`${environment.ApiBaseUrl}/api/Categories`, updateModel)
-    .pipe(
-      timeout(15000), // 15 second timeout
-      tap(() => console.log('✅ Category updated successfully')),
-      catchError((error: any) => {
-        console.error('❌ Update Category API Error:', error);
-        console.error('Error details:', {
-          status: error.status,
-          message: error.message,
-          url: error.url
-        });
-        throw error;
-      })
-    );
-}
+UpdateCetogrey(id:string,UpdateCetogreyRequest:UpdateCetogreyRequest):
+Observable<Categorey>
+{
+ return this.http.put<Categorey>(`${environment.ApiBaseUrl}/api/Categories/${id}`,UpdateCetogreyRequest)
 
 }
+
+    
+}
+

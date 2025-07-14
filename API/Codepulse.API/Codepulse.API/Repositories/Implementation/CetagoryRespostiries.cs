@@ -35,5 +35,18 @@ namespace Codepulse.API.Repositories.Implementation
         {
            return await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public async Task<Catogrey> Updateasync(Catogrey catogrey)
+        {
+           var ExistingCetogrey =  await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == catogrey.Id);
+
+            if (ExistingCetogrey !=null)
+            {
+                dbContext.Entry(ExistingCetogrey).CurrentValues.SetValues(catogrey);
+                await dbContext.SaveChangesAsync();
+                return ExistingCetogrey;
+            }
+            return null;
+        }
     }
 }

@@ -2,10 +2,12 @@ import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Cetagorey } from '../Services/cetagorey';
+import { UpdateCetogreyRequest } from '../models/Update-Cetgory-Request.model'; // Add this import if the type exists
 
 import { Categorey } from '../models/Cetagorey.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { response } from 'express';
 
 @Component({
   selector: 'app-edit-cetagorey',
@@ -15,9 +17,11 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './edit-cetagorey.css'
 })
 export class EditCetagorey implements OnInit, OnDestroy {
+
    
   id: string | null = null;
   paramSubscription?: Subscription;
+  EditCetogreySubscription?: Subscription;
   category?: Categorey;
   errorMessage: string | null = null;
 
@@ -52,27 +56,30 @@ export class EditCetagorey implements OnInit, OnDestroy {
     });
   }
 
+onSubmit() {
 
- onSubmit(): void {
-    if (this.category && this.id) {
-      console.log('Form submitted with category:', this.category);
-      
-      this.categoryService.UpdateCategorey(this.id, this.category).subscribe({
-        next: () => {
-          console.log('Category updated successfully');
-          alert('Category updated successfully!');
-          this.router.navigate(['/admin/category']);
-        },
-        error: (error) => {
-          console.error('Error updating category:', error);
-          alert('Failed to update category. Please try again.');
-        }
-      });
-    }
+const UpdateCetogreyRequest : UpdateCetogreyRequest = {
+  name: this.category?.name || '',
+  urlHandle: this.category?.urlHandle || ''
+
+}
+// pass this object to the service method
+if (this.id){
+   this.EditCetogreySubscription = this.categoryService.UpdateCetogrey(this.id, UpdateCetogreyRequest)
+.subscribe({
+  next:(response)=>{
+    this.router.navigate(['/admin/cetagorey']);
   }
+}
+
+);
+}
+
+}
 
   ngOnDestroy(): void {
     this.paramSubscription?.unsubscribe();
+    this.EditCetogreySubscription?.unsubscribe();
   }
 
  
