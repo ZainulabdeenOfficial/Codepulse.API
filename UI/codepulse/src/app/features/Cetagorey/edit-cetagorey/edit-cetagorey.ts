@@ -68,7 +68,7 @@ if (this.id){
    this.EditCetogreySubscription = this.categoryService.UpdateCetogrey(this.id, UpdateCetogreyRequest)
 .subscribe({
   next:(response)=>{
-    this.router.navigate(['/admin/cetagorey']);
+    this.router.navigateByUrl('/admin/category');
   }
 }
 
@@ -76,6 +76,18 @@ if (this.id){
 }
 
 }
+
+
+deleteCategory():void{
+  if (this.id){
+    this.categoryService.DeleteCetogrey(this.id).subscribe({
+      next:(response)=>{
+        this.router.navigateByUrl('/admin/category');
+      }
+    })
+  }
+}
+
 
   ngOnDestroy(): void {
     this.paramSubscription?.unsubscribe();

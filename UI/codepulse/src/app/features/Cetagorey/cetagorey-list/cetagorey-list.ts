@@ -36,4 +36,6 @@ export class CetagoreyListComponent implements OnInit {
 
 
 
+
+
 }

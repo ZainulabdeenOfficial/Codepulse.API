@@ -65,6 +65,11 @@ Observable<Categorey>
 
 }
 
+DeleteCetogrey(id:string):Observable<Categorey>{
+ return this.http.delete<Categorey>(`${environment.ApiBaseUrl}/api/Categories/${id}`)
+
+}
+
     
 }
 

@@ -25,6 +25,8 @@ namespace Codepulse.API.Repositories.Implementation
             return catogrey;
         }
 
+       
+
         public async Task<IEnumerable<Catogrey>> GetAllAsync()
         {
             return await dbContext.Categories.ToListAsync();
@@ -47,6 +49,23 @@ namespace Codepulse.API.Repositories.Implementation
                 return ExistingCetogrey;
             }
             return null;
+        }
+
+        public async Task<Catogrey?> Deleteasync(Guid id)
+        {
+            var ExistngCetogrey = await dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
+                { 
+                if (ExistngCetogrey == null)
+                {
+                    return null;
+                }
+
+                dbContext.Categories.Remove(ExistngCetogrey);
+                dbContext.SaveChangesAsync();
+
+                return ExistngCetogrey;
+
+            }
         }
     }
 }

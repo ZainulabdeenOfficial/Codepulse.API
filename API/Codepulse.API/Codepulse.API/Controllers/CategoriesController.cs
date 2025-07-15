@@ -5,6 +5,7 @@ using Codepulse.API.Repositories.Implementation;
 using Codepulse.API.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using System.Collections.Immutable;
 
 namespace Codepulse.API.Controllers
@@ -106,9 +107,9 @@ namespace Codepulse.API.Controllers
 
         }
 
-    
-    //put method : localhost:5000/api/categories/{id}
-    [HttpPut("{id:guid}")]
+
+        //put method : localhost:5000/api/categories/{id}
+        [HttpPut("{id:guid}")]
 
         public async Task<IActionResult> EditCetagorey([FromRoute] Guid id, updateCetogreyRequestDto request) {
 
@@ -137,6 +138,35 @@ namespace Codepulse.API.Controllers
 
         }
 
+        //Delete Method: localhost:5000/api/categories/{id}
+        [HttpDelete("{id:guid}")]
 
-    }
+        public async Task<IActionResult> DeleteCetogery([FromRoute] Guid id )
+        {
+         var CetogreyDeleted =    await categoeryRepository.Deleteasync(id);
+            if (CetogreyDeleted ==null)
+            {
+                 return NotFound();
+            }
+
+            // Map domain model to DTO
+
+            var response = new CetogreyDto
+            {
+                Id = CetogreyDeleted.Id,
+                Name = CetogreyDeleted.Name,
+                UrlHandle = CetogreyDeleted.UrlHandle
+            };
+            return Ok(response);
+
+
+        }
+
+
+
+
+    } 
+
+    
+
 }

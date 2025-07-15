@@ -12,5 +12,8 @@ namespace Codepulse.API.Repositories.Interface
 
       Task<Catogrey?>  Updateasync(Catogrey catogrey);
 
+      Task<Catogrey?>   Deleteasync(Guid id);
+
+
     }
 }
