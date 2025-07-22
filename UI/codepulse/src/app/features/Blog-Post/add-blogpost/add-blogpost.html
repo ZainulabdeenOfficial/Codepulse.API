@@ -1,17 +1,17 @@
 <div class="Container">
     <h1 class="mt-3">Add BlogPost</h1>
-    <form>
+    <form #form="ngForm" (ngSubmit)="onSubmit()">
         <div class="mt-2 mb-5">
             <div class="mt-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" id="title" class="form-control" placeholder="Enter title" required>
+                <input type="text" id="title" class="form-control" placeholder="Enter title" required [(ngModel)]="model.Title" name="Title">
             </div>
          </div>
 
 
         <div class="mt-3">
             <label for="UrlHandle" class="form-label">Url Handle</label>
-            <input type="text" id="UrlHandle" class="form-control" placeholder="Enter Url Handle" required>
+            <input type="text" id="UrlHandle" class="form-control" placeholder="Enter Url Handle" required [(ngModel)]="model.UrlHandle" name="UrlHandle">
         </div>
 
 
@@ -19,7 +19,7 @@
 
         <div class="mt-3">
             <label for="ShortDesciption" class="form-label">Short Desciption</label>
-            <input type="text" id="ShortDesciption" class="form-control" placeholder="Enter Short Desciption" required>
+            <input type="text" id="ShortDesciption" class="form-control" placeholder="Enter Short Desciption" required [(ngModel)]="model.ShortDescription" name="ShortDescription">
         </div>
 
 
@@ -27,28 +27,28 @@
 
         <div class="mt-3">
             <label for="Content" class="form-label">Content</label>
-            <textarea name="Content" id="Content" class="form-control"></textarea>
+            <textarea name="Content" id="Content" class="form-control" [(ngModel)]="model.Content"></textarea>
         </div>
 
         <div class="mt-3">
             <label for="FeaturedImageUrl" class="form-label">Featured Image Url</label>
             <input type="text" id="FeaturedImageUrl" class="form-control" placeholder="Enter Featured Image Url"
-                required>
+                required [(ngModel)]="model.FeaturedImageUrl" name="FeaturedImageUrl">
         </div>
 
         <div class="mt-3">
             <label for="PublishedDate" class="form-label">Published Date</label>
-            <input type="date" id="PublishedDate" class="form-control" required>
+            <input type="date" id="PublishedDate" class="form-control" required [(ngModel)]="publishedDateString" name="PublishedDate">
         </div>
 
         <div class="mt-3">
             <label for="Author" class="form-label">Author</label>
-            <input type="text" id="Author" class="form-control" placeholder="Enter Author Name" required>
+            <input type="text" id="Author" class="form-control" placeholder="Enter Author Name" required [(ngModel)]="model.Author" name="Author">
         </div>
 
         <div class="form-check m-3">
-            <input class="form-check-input" type="checkbox"  id="IsVisible">
-            <label class="form-check-label" for="checkDefault">
+            <input class="form-check-input" type="checkbox" id="IsVisible" [(ngModel)]="model.IsVisible" name="IsVisible">
+            <label class="form-check-label" for="IsVisible">
                 IsVisible?
             </label>
         </div>
