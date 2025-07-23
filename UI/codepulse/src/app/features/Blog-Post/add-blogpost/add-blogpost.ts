@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { BlogPost } from '../models/add-blog-post.model';
-import { RouterModule } from '@angular/router';
+import { BlogPosts } from '../models/blog-post.model';
+import { Route, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { BlogPostService } from '../Services/blog-post';
+
 
 @Component({
   selector: 'app-add-blogpost',
@@ -13,7 +16,9 @@ export class AddBlogpost {
 
   model : BlogPost;
   
-  constructor (){
+  constructor (private blogPostService: BlogPostService, 
+    private router: Router
+  ) {
     this.model = {
       Title :'',
       ShortDescription :'',
@@ -34,8 +39,18 @@ export class AddBlogpost {
     this.model.PublishedDate = new Date(value);
   }
 
-  onSubmit(): void{
-    console.log('Form submitted', this.model);
+  onSubmit(): void {
+    this.blogPostService.CreateBlogPost(this.model).subscribe({
+      next: (response: BlogPosts) => {
+        console.log('Blog post created successfully:', response);
+        this.router.navigateByUrl('/admin/Blogpost');
+      },
+      error: (error) => {
+        console.error('Error creating blog post:', error);
+        // You can add user-friendly error handling here
+        alert('Error creating blog post. Please ensure the API server is running.');
+      }
+    });
   }
 
 }
