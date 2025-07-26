@@ -27,7 +27,15 @@
 
         <div class="mt-3">
             <label for="Content" class="form-label">Content</label>
-            <textarea name="Content" id="Content" class="form-control" [(ngModel)]="model.Content"></textarea>
+           <div class="d-flex flex-row">
+            <div class="col-6 p-2">
+                <textarea name="Content" id="Content" style="height: 350px;max-height: 350px;" class="form-control" [(ngModel)]="model.Content"></textarea>
+            </div>
+            <div class="col-6 p-2" style="max-height: 350px;overflow-y: scroll;">
+                <markdown [data]="model.Content"></markdown>
+            </div>
+
+           </div>
         </div>
 
         <div class="mt-3">
