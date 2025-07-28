@@ -18,6 +18,7 @@
 
         public bool IsVisible { get; set; }
 
+        public ICollection<Catogrey> Cetagories { get; set; }
 
 
 
