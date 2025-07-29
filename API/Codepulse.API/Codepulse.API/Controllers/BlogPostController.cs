@@ -1,5 +1,6 @@
 ﻿using Codepulse.API.Models.Domain;
 using Codepulse.API.Models.DTO;
+using Codepulse.API.Repositories.Implementation;
 using Codepulse.API.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace Codepulse.API.Controllers
     public class BlogPostController : ControllerBase
 {
         private readonly IBlogPostRepository blogPostRepository;
+        private readonly ICategoeryRepository categoeryRepository;
 
-        public BlogPostController(IBlogPostRepository blogPostRepository)
+        public BlogPostController(IBlogPostRepository blogPostRepository,ICategoeryRepository categoeryRepository)
         {
             this.blogPostRepository = blogPostRepository;
+            this.categoeryRepository = categoeryRepository;
         }
 
 
@@ -35,9 +38,20 @@ namespace Codepulse.API.Controllers
                 ShortDescription = request.ShortDescription,
                 Title = request.Title,
                 UrlHandle = request.UrlHandle,
+                Cetagories = new List<Catogrey>()
             };
 
-          Blogpost =  await blogPostRepository.createaysn(Blogpost);
+            foreach (var CetagoryGuid in request.Categoires)
+            {
+                var ExisitingCetogrey = await categoeryRepository.GetByID(CetagoryGuid);
+
+                if (Blogpost.Cetagories is not null)
+                {
+                    Blogpost.Cetagories.Add(ExisitingCetogrey);
+                }
+            }
+
+            Blogpost =  await blogPostRepository.createaysn(Blogpost);
 
             // Convert the domain model to DTO 
 
@@ -51,7 +65,14 @@ namespace Codepulse.API.Controllers
                 UrlHandle = Blogpost.UrlHandle,
                 PublishedDate = Blogpost.PublishedDate,
                 Author = Blogpost.Author,
-                IsVisible = Blogpost.IsVisible
+                IsVisible = Blogpost.IsVisible,
+
+                Cetagories =  Blogpost.Cetagories.Select(x=> new CetogreyDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle= x.UrlHandle,
+                }).ToList(),
 
             };
 

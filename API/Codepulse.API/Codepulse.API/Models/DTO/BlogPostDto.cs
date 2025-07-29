@@ -18,6 +18,8 @@
         public string Author { get; set; }
 
         public bool IsVisible { get; set; }
+
+        public List<CetogreyDto> Cetagories  { get; set; } = new List<CetogreyDto>();
     }
 
 }

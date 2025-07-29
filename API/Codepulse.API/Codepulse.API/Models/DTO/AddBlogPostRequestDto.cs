@@ -17,5 +17,7 @@
 
         public bool IsVisible { get; set; }
 
+        public Guid [] Categoires { get; set; }
+
     }
 }
