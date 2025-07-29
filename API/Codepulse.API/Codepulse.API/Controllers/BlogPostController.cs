@@ -105,7 +105,13 @@ namespace Codepulse.API.Controllers
                     UrlHandle = Blogpost.UrlHandle,
                     PublishedDate = Blogpost.PublishedDate,
                     Author = Blogpost.Author,
-                    IsVisible = Blogpost.IsVisible
+                    IsVisible = Blogpost.IsVisible,
+                       Cetagories = Blogpost.Cetagories.Select(x => new CetogreyDto
+                       {
+                           Id = x.Id,
+                           Name = x.Name,
+                           UrlHandle = x.UrlHandle,
+                       }).ToList(),
 
 
                 });
