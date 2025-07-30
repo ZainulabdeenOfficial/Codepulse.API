@@ -1,3 +1,6 @@
+import { Categorey } from "../../Cetagorey/models/Cetagorey.model";
+
+
 export interface BlogPosts{
   id: string;
   title: string,
@@ -7,5 +10,6 @@ export interface BlogPosts{
   urlHandle: string,
   publishedDate: string,
   author: string,
-  isVisible: boolean
+  isVisible: boolean,
+  cetagories : Categorey[]
 }
