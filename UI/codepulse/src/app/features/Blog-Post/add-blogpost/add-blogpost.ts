@@ -1,24 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BlogPost } from '../models/add-blog-post.model';
 import { BlogPosts } from '../models/blog-post.model';
 import { Route, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { BlogPostService } from '../Services/blog-post';
 import { MarkdownComponent } from 'ngx-markdown';
+import { Cetagorey } from '../../Cetagorey/Services/cetagorey';
+import { Observable } from 'rxjs';
+import { Categorey } from '../../Cetagorey/models/Cetagorey.model';
+import { AsyncPipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-add-blogpost',
-  imports: [FormsModule, MarkdownComponent],
+  imports: [FormsModule, MarkdownComponent, AsyncPipe],
   templateUrl: './add-blogpost.html',
   styleUrl: './add-blogpost.css'
 })
-export class AddBlogpost {
+export class AddBlogpost implements OnInit {
 
   model : BlogPost;
+  Cetagories$ ? : Observable<Categorey[]>;
   
   constructor (private blogPostService: BlogPostService, 
-    private router: Router
+    private router: Router, private CetogreyService : Cetagorey
   ) {
     this.model = {
       Title :'',
@@ -28,8 +33,13 @@ export class AddBlogpost {
       PublishedDate: new Date(),
       IsVisible : true,
       UrlHandle : '',
-      FeaturedImageUrl : ''
+      FeaturedImageUrl : '',
+      Cetagories: []
     }
+  }
+  ngOnInit(): void {
+     this.Cetagories$   = this.CetogreyService.GetAllCategorey()
+    
   }
 
   get publishedDateString(): string {

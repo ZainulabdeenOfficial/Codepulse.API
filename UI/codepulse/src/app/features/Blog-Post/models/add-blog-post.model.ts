@@ -6,6 +6,6 @@ export interface BlogPost{
     UrlHandle: string,
     Author: string,
     PublishedDate: Date,
-    IsVisible: boolean
-
+    IsVisible: boolean,
+    Cetagories?: string[]
 }
