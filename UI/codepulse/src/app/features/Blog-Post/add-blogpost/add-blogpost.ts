@@ -26,40 +26,36 @@ export class AddBlogpost implements OnInit {
     private router: Router, private CetogreyService : Cetagorey
   ) {
     this.model = {
-      Title :'',
-      ShortDescription :'',
-      Content : '',
-      Author :'',
-      PublishedDate: new Date(),
-      IsVisible : true,
-      UrlHandle : '',
-      FeaturedImageUrl : '',
-      Cetagories: []
+      title: '',
+      shortDescription: '',
+      content: '',
+      author: '',
+      publishedDate: new Date().toISOString().split('T')[0],
+      isVisible: true,
+      urlHandle: '',
+      featuredImageUrl: '',
+      Categoires: []
     }
   }
   ngOnInit(): void {
      this.Cetagories$   = this.CetogreyService.GetAllCategorey()
-    
-  }
-
-  get publishedDateString(): string {
-    return this.model.PublishedDate ? this.model.PublishedDate.toISOString().split('T')[0] : '';
-  }
-
-  set publishedDateString(value: string) {
-    this.model.PublishedDate = new Date(value);
   }
 
   onSubmit(): void {
+    console.log('📤 Submitting blog post data:', this.model);
+    console.log('📅 Published Date type:', typeof this.model.publishedDate);
+    console.log('📅 Published Date value:', this.model.publishedDate);
+    
     this.blogPostService.CreateBlogPost(this.model).subscribe({
       next: (response: BlogPosts) => {
-        console.log('Blog post created successfully:', response);
+        console.log('✅ Blog post created successfully:', response);
         this.router.navigateByUrl('/admin/Blogpost');
       },
       error: (error) => {
-        console.error('Error creating blog post:', error);
-        // You can add user-friendly error handling here
-        alert('Error creating blog post. Please ensure the API server is running.');
+        console.error('❌ Error creating blog post:', error);
+        if (error.error && error.error.errors) {
+          console.error('🔍 Validation errors:', error.error.errors);
+        }
       }
     });
   }

@@ -4,14 +4,14 @@
         <div class="mt-2 mb-5">
             <div class="mt-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" id="title" class="form-control" placeholder="Enter title" required [(ngModel)]="model.Title" name="Title">
+                <input type="text" id="title" class="form-control" placeholder="Enter title" required [(ngModel)]="model.title" name="title">
             </div>
          </div>
 
 
         <div class="mt-3">
             <label for="UrlHandle" class="form-label">Url Handle</label>
-            <input type="text" id="UrlHandle" class="form-control" placeholder="Enter Url Handle" required [(ngModel)]="model.UrlHandle" name="UrlHandle">
+            <input type="text" id="UrlHandle" class="form-control" placeholder="Enter Url Handle" required [(ngModel)]="model.urlHandle" name="urlHandle">
         </div>
 
 
@@ -19,7 +19,7 @@
 
         <div class="mt-3">
             <label for="ShortDesciption" class="form-label">Short Desciption</label>
-            <input type="text" id="ShortDesciption" class="form-control" placeholder="Enter Short Desciption" required [(ngModel)]="model.ShortDescription" name="ShortDescription">
+            <input type="text" id="ShortDesciption" class="form-control" placeholder="Enter Short Desciption" required [(ngModel)]="model.shortDescription" name="shortDescription">
         </div>
 
 
@@ -29,10 +29,10 @@
             <label for="Content" class="form-label">Content</label>
            <div class="d-flex flex-row">
             <div class="col-6 p-2">
-                <textarea name="Content" id="Content" style="height: 350px;max-height: 350px;" class="form-control" [(ngModel)]="model.Content"></textarea>
+                <textarea name="Content" id="Content" style="height: 350px;max-height: 350px;" class="form-control" [(ngModel)]="model.content"></textarea>
             </div>
             <div class="col-6 p-2" style="max-height: 350px;overflow-y: scroll;">
-                <markdown [data]="model.Content"></markdown>
+                <markdown [data]="model.content"></markdown>
             </div>
 
            </div>
@@ -40,39 +40,39 @@
 
         <div class="mt-3">
             <label for="FeaturedImageUrl" class="form-label">Featured Image Url</label>
-            @if (model.FeaturedImageUrl !=''){
+            @if (model.featuredImageUrl !=''){
                 <div>
-                         <img [src]="model.FeaturedImageUrl" alt="" height="100" class="my-2">
+                         <img [src]="model.featuredImageUrl" alt="" height="100" class="my-2">
                 </div>
             }
          
          <input type="text" id="FeaturedImageUrl" class="form-control" placeholder="Enter Featured Image Url"
-                required [(ngModel)]="model.FeaturedImageUrl" name="FeaturedImageUrl">
+                required [(ngModel)]="model.featuredImageUrl" name="featuredImageUrl">
         </div>
 
         <div class="mt-3">
             <label for="PublishedDate" class="form-label">Published Date</label>
-            <input type="date" id="PublishedDate" class="form-control" required [(ngModel)]="publishedDateString" name="PublishedDate">
+            <input type="date" id="PublishedDate" class="form-control" required [(ngModel)]="model.publishedDate" name="publishedDate">
         </div>
 
         <div class="mt-3">
             <label for="Author" class="form-label">Author</label>
-            <input type="text" id="Author" class="form-control" placeholder="Enter Author Name" required [(ngModel)]="model.Author" name="Author">
+            <input type="text" id="Author" class="form-control" placeholder="Enter Author Name" required [(ngModel)]="model.author" name="author">
         </div>
 
         <div class="form-check m-3">
-            <input class="form-check-input" type="checkbox" id="IsVisible" [(ngModel)]="model.IsVisible" name="IsVisible">
+            <input class="form-check-input" type="checkbox" id="IsVisible" [(ngModel)]="model.isVisible" name="isVisible">
             <label class="form-check-label" for="IsVisible">
                 IsVisible?
             </label>
         </div>
 
         <div class="mt-3">
-            <label for="cetagories" class="form-label">cetagories</label>
+            <label for="categories" class="form-label">Categories</label>
             @if (Cetagories$ | async; as Cetagories) {
-                <select class="form-control" name="Cetagories" id="cetagories" multiple>
+                <select class="form-control" name="categories" id="categories" multiple [(ngModel)]="model.Categoires">
                     @for (cetagory of Cetagories; track cetagory.id) {
-                        <option [value]="cetagory.id" [selected]="model.Cetagories?.includes(cetagory.id)">{{cetagory.name}}</option>
+                        <option [value]="cetagory.id">{{cetagory.name}}</option>
                     }
                 </select>
             }
