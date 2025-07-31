@@ -10,11 +10,11 @@ namespace Codepulse.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class BlogPostController : ControllerBase
-{
+    {
         private readonly IBlogPostRepository blogPostRepository;
         private readonly ICategoeryRepository categoeryRepository;
 
-        public BlogPostController(IBlogPostRepository blogPostRepository,ICategoeryRepository categoeryRepository)
+        public BlogPostController(IBlogPostRepository blogPostRepository, ICategoeryRepository categoeryRepository)
         {
             this.blogPostRepository = blogPostRepository;
             this.categoeryRepository = categoeryRepository;
@@ -26,7 +26,7 @@ namespace Codepulse.API.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> CreateBlogPost([FromBody]AddBlogPostRequestDto request)
+        public async Task<IActionResult> CreateBlogPost([FromBody] AddBlogPostRequestDto request)
         {
             var Blogpost = new BlogPost
             {
@@ -51,13 +51,13 @@ namespace Codepulse.API.Controllers
                 }
             }
 
-            Blogpost =  await blogPostRepository.createaysn(Blogpost);
+            Blogpost = await blogPostRepository.createaysn(Blogpost);
 
             // Convert the domain model to DTO 
 
             var response = new BlogPostDto
             {
-                 ID = Blogpost.ID,
+                ID = Blogpost.ID,
                 Title = Blogpost.Title,
                 ShortDescription = Blogpost.ShortDescription,
                 Content = Blogpost.Content,
@@ -67,16 +67,16 @@ namespace Codepulse.API.Controllers
                 Author = Blogpost.Author,
                 IsVisible = Blogpost.IsVisible,
 
-                Cetagories =  Blogpost.Cetagories.Select(x=> new CetogreyDto
+                Cetagories = Blogpost.Cetagories.Select(x => new CetogreyDto
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    UrlHandle= x.UrlHandle,
+                    UrlHandle = x.UrlHandle,
                 }).ToList(),
 
             };
 
-            return Ok (response);
+            return Ok(response);
 
         }
 
@@ -87,7 +87,7 @@ namespace Codepulse.API.Controllers
         public async Task<IActionResult> GetAllBlogPosts()
         {
 
-           var blogpost =   await blogPostRepository.GetAllAsync();
+            var blogpost = await blogPostRepository.GetAllAsync();
 
             // Convert model to DTO
 
@@ -106,21 +106,56 @@ namespace Codepulse.API.Controllers
                     PublishedDate = Blogpost.PublishedDate,
                     Author = Blogpost.Author,
                     IsVisible = Blogpost.IsVisible,
-                       Cetagories = Blogpost.Cetagories.Select(x => new CetogreyDto
-                       {
-                           Id = x.Id,
-                           Name = x.Name,
-                           UrlHandle = x.UrlHandle,
-                       }).ToList(),
+                    Cetagories = Blogpost.Cetagories.Select(x => new CetogreyDto
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        UrlHandle = x.UrlHandle,
+                    }).ToList(),
 
 
                 });
-                
+
             }
-            return Ok (respone);
+            return Ok(respone);
 
         }
 
+        //Get : apibaseurl/api/blogpost{id}
 
+        [HttpGet("{id:guid}")]
+
+        public async Task<IActionResult> getBlogpostById([FromRoute] Guid id)
+        {
+
+            // Get blogpost from reposties
+            var Blogpost = await blogPostRepository.GetByIDAsync(id);
+            if (Blogpost == null)
+            {
+                return NotFound();
+            }
+            var response = new BlogPostDto
+            {
+                ID = Blogpost.ID,
+                Title = Blogpost.Title,
+                ShortDescription = Blogpost.ShortDescription,
+                Content = Blogpost.Content,
+                FeaturedImageUrl = Blogpost.FeaturedImageUrl,
+                UrlHandle = Blogpost.UrlHandle,
+                PublishedDate = Blogpost.PublishedDate,
+                Author = Blogpost.Author,
+                IsVisible = Blogpost.IsVisible,
+
+                Cetagories = Blogpost.Cetagories.Select(x => new CetogreyDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle,
+                }).ToList(),
+
+
+            };
+            return Ok(response);
+        }
     }
 }

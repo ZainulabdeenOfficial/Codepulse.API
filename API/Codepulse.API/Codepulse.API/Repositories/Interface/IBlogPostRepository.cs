@@ -7,5 +7,7 @@ namespace Codepulse.API.Repositories.Interface
         Task<BlogPost> createaysn(BlogPost blogPost);
 
         Task<IEnumerable<BlogPost>> GetAllAsync();
+
+      Task<BlogPost ?> GetByIDAsync(Guid id);
     }
 }
