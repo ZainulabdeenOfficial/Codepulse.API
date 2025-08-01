@@ -15,6 +15,7 @@
         <th>Short Description</th>
         <th>IsVisible</th>
         <th> Categorey</th>
+        <th></th>
 
       </tr>
     </thead>
@@ -25,13 +26,21 @@
         <td>{{ blogPost.title || 'No Title Found' }}</td>
         <td>{{ blogPost.shortDescription || 'No Description Found' }}</td>
         <td>{{ blogPost.isVisible ? 'Yes' : 'No' }}</td>
+        
         @for ( Categorey of blogPost.cetagories ; track Categorey.id) {
         <span>
           <span class="badge text-bg-secondary me-2">{{Categorey.name}}</span>
         </span>
         }
+       <td>
+          <a  class="btn btn-light" [routerLink]="['/admin/Blogpost/',blogPost.id]"> Edit</a>
+        </td>
+
+
+        
 
       </tr>
+       
       }
     </tbody>
   </table>

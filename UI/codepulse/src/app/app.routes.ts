@@ -4,6 +4,7 @@ import { AddCategorey } from './features/Cetagorey/add-categorey/add-categorey';
 import { EditCetagorey } from './features/Cetagorey/edit-cetagorey/edit-cetagorey';
 import { BlogpostList } from './features/Blog-Post/blogpost-list/blogpost-list';
 import { AddBlogpost } from './features/Blog-Post/add-blogpost/add-blogpost';
+import { EditBlogpost } from './features/Blog-Post/edit-blogpost/edit-blogpost';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/admin/category', pathMatch: 'full' },
@@ -13,6 +14,8 @@ export const routes: Routes = [
   {path:'admin/Blogpost',component:BlogpostList},
 
   {path:'admin/Blogpost/add',component:AddBlogpost},
+
+  {path: 'admin/Blogpost/:id', component: EditBlogpost},
 
   
 ];
