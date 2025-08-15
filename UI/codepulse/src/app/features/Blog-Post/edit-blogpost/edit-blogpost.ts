@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { BlogPostService } from '../Services/blog-post';
 import { response } from 'express';
@@ -10,10 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { MarkdownComponent } from 'ngx-markdown';
 import { Cetagorey } from '../../Cetagorey/Services/cetagorey';
 import { AsyncPipe, JsonPipe } from '@angular/common';
+import { UpdateBlogPost } from '../models/update-Blog-Post.model';
 
 @Component({
   selector: 'app-edit-blogpost',
-  imports: [FormsModule,MarkdownComponent,AsyncPipe,JsonPipe],
+  imports: [FormsModule,MarkdownComponent,AsyncPipe],
   templateUrl: './edit-blogpost.html',
   styleUrl: './edit-blogpost.css'
 })
@@ -34,10 +35,14 @@ export class EditBlogpost implements OnInit, OnDestroy {
   Cetagories$ ? : Observable<Categorey[]>;
   routeSubcription ? : Subscription
   selectedCetagories: string[] = []
+
+  UpdateBlogPostSubscription?: Subscription;
+  getblogPostByIDSubscription?: Subscription;
   
   constructor (private route : ActivatedRoute,
                 private blogPostService : BlogPostService,
-                private CetagoreyService : Cetagorey
+                private CetagoreyService : Cetagorey,
+                private router: Router
   ){
 
   }
@@ -54,7 +59,8 @@ export class EditBlogpost implements OnInit, OnDestroy {
 
     // Get Blog Post by ID
     if (this.id) {
-      this.blogPostService.getblogpostByID(this.id).subscribe({
+
+   this.getblogPostByIDSubscription  =   this.blogPostService.getblogpostByID(this.id).subscribe({
        next: (response: BlogPosts) => {
              console.log('🔍 API Response:', response);
              console.log('📂 Raw Categories:', response.cetagories);
@@ -89,28 +95,40 @@ export class EditBlogpost implements OnInit, OnDestroy {
 
   }
   onSubmit() {
-    if (this.id && this.model) {
-      // Update the categories in the model before submitting
-      this.model.Categoires = this.selectedCetagories || [];
-      
-      console.log('📤 Submitting updated blog post:', this.model);
-      console.log('🆔 Blog Post ID:', this.id);
-      
-      // TODO: Implement update functionality
-      // this.blogPostService.updateBlogPost(this.id, this.model).subscribe({
-      //   next: (response) => {
-      //     console.log('✅ Blog post updated successfully:', response);
-      //     // Navigate back to blog list or show success message
-      //   },
-      //   error: (error) => {
-      //     console.error('❌ Error updating blog post:', error);
-      //   }
-      // });
-      console.log('⚠️ Update functionality to be implemented');
+   // Convert model to request  object
+
+   if (this.model && this.id)
+   {
+      var UpdateBlogPost : UpdateBlogPost =
+      {
+        author: this.model.author,
+        content: this.model.content,
+        title: this.model.title,
+        shortDescription: this.model.shortDescription,
+        featuredImageUrl: this.model.featuredImageUrl,
+        urlHandle: this.model.urlHandle,
+        publishedDate: this.model.publishedDate,
+        isVisible: this.model.isVisible,
+        Categoires: this.selectedCetagories ?? []
+ };
+
+ this.UpdateBlogPostSubscription = this.blogPostService.UpdateBlogPost(this.id,UpdateBlogPost).subscribe(
+  {
+    next:(response:BlogPost)=>{
+      this.router.navigateByUrl('/admin/Blogpost');
+
     }
+  }
+ )
+
+   }
+      
+     
   }
   ngOnDestroy(): void {
     this.routeSubcription?.unsubscribe();
+    this.UpdateBlogPostSubscription?.unsubscribe();
+    this.getblogPostByIDSubscription?.unsubscribe();
   }
 
 }
