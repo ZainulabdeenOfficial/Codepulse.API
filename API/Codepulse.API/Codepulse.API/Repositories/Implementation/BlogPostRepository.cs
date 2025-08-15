@@ -34,6 +34,25 @@ namespace Codepulse.API.Repositories.Implementation
         {
             return await dbContext.BlogPosts.Include(x => x.Cetagories).FirstOrDefaultAsync(x => x.ID == id);
         }
+
+        public async Task<BlogPost?> UpdateAysnc(BlogPost blogPost)
+        {
+         var ExisitingBlogpost =  await dbContext.BlogPosts.Include(x=>x.Cetagories).
+                FirstOrDefaultAsync(x=>x.ID == blogPost.ID);
+            if (ExisitingBlogpost == null)
+            {
+                return null;
+            }
+            // Update Blgpost
+            dbContext.Entry(ExisitingBlogpost).CurrentValues.SetValues(blogPost);
+            // Update Cetogries
+            ExisitingBlogpost.Cetagories = blogPost.Cetagories;
+
+            await dbContext.SaveChangesAsync();
+
+            return blogPost;
+
+        }
     }
 
 

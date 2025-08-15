@@ -43,7 +43,7 @@ namespace Codepulse.API.Controllers
 
             foreach (var CetagoryGuid in request.Categoires)
             {
-                var ExisitingCetogrey = await categoeryRepository.GetByID(CetagoryGuid);
+                var ExisitingCetogrey = await categoeryRepository.GetByIDAsync(CetagoryGuid);
 
                 if (Blogpost.Cetagories is not null)
                 {
@@ -156,6 +156,63 @@ namespace Codepulse.API.Controllers
 
             };
             return Ok(response);
+        }
+        //put {apibaseurl}/api/blogpost/{id}
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> UpdateBlogpostbyID([FromRoute] Guid id, UpdateBlogpostRequestDto request)
+        {
+            // convert dto to  domain model
+            var Blogpost = new BlogPost
+            {
+                ID = id,
+                Author = request.Author,
+                Content = request.Content,
+                FeaturedImageUrl = request.FeaturedImageUrl,
+                IsVisible = request.IsVisible,
+                PublishedDate = request.PublishedDate,
+                ShortDescription = request.ShortDescription,
+                Title = request.Title,
+                UrlHandle = request.UrlHandle,
+                Cetagories = new List<Catogrey>()
+            };
+            // foreach loop 
+            foreach (var CetogreyGuid in request.Categoires)
+            {
+                var ExistingCetogrey = await categoeryRepository.GetByIDAsync(CetogreyGuid);
+
+                if (ExistingCetogrey !=null)
+                {
+                    Blogpost.Cetagories.Add(ExistingCetogrey);
+                }
+                
+            }
+            // call update repository to  update domain model 
+
+          var UpdatedBlogPost =   await blogPostRepository.UpdateAysnc(Blogpost);
+
+            // Domain Model to DTo 
+            var respone = new BlogPostDto
+            {
+                ID = Blogpost.ID,
+                Title = Blogpost.Title,
+                ShortDescription = Blogpost.ShortDescription,
+                Content = Blogpost.Content,
+                FeaturedImageUrl = Blogpost.FeaturedImageUrl,
+                UrlHandle = Blogpost.UrlHandle,
+                PublishedDate = Blogpost.PublishedDate,
+                Author = Blogpost.Author,
+                IsVisible = Blogpost.IsVisible,
+
+                Cetagories = Blogpost.Cetagories.Select(x => new CetogreyDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle,
+                }).ToList(),
+            };
+
+            return Ok(respone);
+
         }
     }
 }

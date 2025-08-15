@@ -33,7 +33,7 @@ namespace Codepulse.API.Repositories.Implementation
                 
         }
 
-        public async Task<Catogrey?> GetByID(Guid id)
+        public async Task<Catogrey?> GetByIDAsync(Guid id)
         {
            return await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id);
         }

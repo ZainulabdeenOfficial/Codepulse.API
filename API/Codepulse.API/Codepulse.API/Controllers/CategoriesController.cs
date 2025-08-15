@@ -90,7 +90,7 @@ namespace Codepulse.API.Controllers
         public async Task<IActionResult> GetCetagoreyById([FromRoute] Guid id)
         {
 
-            var ExistingCetagorey = await categoeryRepository.GetByID(id);
+            var ExistingCetagorey = await categoeryRepository.GetByIDAsync(id);
 
             if (ExistingCetagorey is null)
             {

@@ -9,5 +9,10 @@ namespace Codepulse.API.Repositories.Interface
         Task<IEnumerable<BlogPost>> GetAllAsync();
 
       Task<BlogPost ?> GetByIDAsync(Guid id);
+
+    Task <BlogPost ?> UpdateAysnc(BlogPost blogPost);
+     
+
+     
     }
 }
