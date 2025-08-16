@@ -11,6 +11,8 @@ namespace Codepulse.API.Repositories.Interface
       Task<BlogPost ?> GetByIDAsync(Guid id);
 
     Task <BlogPost ?> UpdateAysnc(BlogPost blogPost);
+
+    Task <BlogPost ?> DeleteAysnc(Guid id);
      
 
      

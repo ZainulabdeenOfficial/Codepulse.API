@@ -25,6 +25,7 @@ namespace Codepulse.API.Repositories.Implementation
             return blogPost;
         }
 
+       
         public async Task<IEnumerable<BlogPost>> GetAllAsync()
         {
            return  await dbContext.BlogPosts.Include(x=>x.Cetagories).ToListAsync();
@@ -53,6 +54,18 @@ namespace Codepulse.API.Repositories.Implementation
             return blogPost;
 
         }
+        public async Task<BlogPost?> DeleteAysnc(Guid id)
+        {
+         var ExistingVariable =   await dbContext.BlogPosts.FirstOrDefaultAsync(x=>x.ID==id);
+            if (ExistingVariable == null)
+            {
+                return null;
+            }
+            dbContext.BlogPosts.Remove(ExistingVariable);
+            await dbContext.SaveChangesAsync();
+            return ExistingVariable;
+        }
+
     }
 
 

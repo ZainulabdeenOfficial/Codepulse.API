@@ -180,15 +180,15 @@ namespace Codepulse.API.Controllers
             {
                 var ExistingCetogrey = await categoeryRepository.GetByIDAsync(CetogreyGuid);
 
-                if (ExistingCetogrey !=null)
+                if (ExistingCetogrey != null)
                 {
                     Blogpost.Cetagories.Add(ExistingCetogrey);
                 }
-                
+
             }
             // call update repository to  update domain model 
 
-          var UpdatedBlogPost =   await blogPostRepository.UpdateAysnc(Blogpost);
+            var UpdatedBlogPost = await blogPostRepository.UpdateAysnc(Blogpost);
 
             // Domain Model to DTo 
             var respone = new BlogPostDto
@@ -214,5 +214,33 @@ namespace Codepulse.API.Controllers
             return Ok(respone);
 
         }
-    }
+        //Delete {apibaseurl}/api/blogpost/{id}
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> DeleteBlogPost([FromRoute] Guid id)
+        {
+                var DeletedBlogPost = await blogPostRepository.DeleteAysnc(id);
+
+            if (DeletedBlogPost == null) { 
+            
+            return NotFound();
+            
+            }
+
+            var respone = new BlogPostDto
+            {
+                ID = DeletedBlogPost.ID,
+                Title = DeletedBlogPost.Title,
+                ShortDescription = DeletedBlogPost.ShortDescription,
+                Content = DeletedBlogPost.Content,
+                FeaturedImageUrl = DeletedBlogPost.FeaturedImageUrl,
+                UrlHandle = DeletedBlogPost.UrlHandle,
+                PublishedDate = DeletedBlogPost.PublishedDate,
+                Author = DeletedBlogPost.Author,
+                IsVisible = DeletedBlogPost.IsVisible,
+            };
+            return Ok(respone);
+        }
+
+     }
+
 }
