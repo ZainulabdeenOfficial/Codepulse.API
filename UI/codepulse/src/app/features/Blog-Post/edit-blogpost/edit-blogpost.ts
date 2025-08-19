@@ -11,10 +11,11 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { Cetagorey } from '../../Cetagorey/Services/cetagorey';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { UpdateBlogPost } from '../models/update-Blog-Post.model';
+import { ImageSelector } from "../../../Shared_/Components/image-selector/image-selector";
 
 @Component({
   selector: 'app-edit-blogpost',
-  imports: [FormsModule,MarkdownComponent,AsyncPipe],
+  imports: [FormsModule, MarkdownComponent, AsyncPipe, ImageSelector],
   templateUrl: './edit-blogpost.html',
   styleUrl: './edit-blogpost.css'
 })
