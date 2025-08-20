@@ -12,10 +12,12 @@ import { Cetagorey } from '../../Cetagorey/Services/cetagorey';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { UpdateBlogPost } from '../models/update-Blog-Post.model';
 import { ImageSelector } from "../../../Shared_/Components/image-selector/image-selector";
+import { NgClass } from '@angular/common';
+
 
 @Component({
   selector: 'app-edit-blogpost',
-  imports: [FormsModule, MarkdownComponent, AsyncPipe, ImageSelector],
+  imports: [FormsModule, MarkdownComponent, AsyncPipe, ImageSelector,NgClass],
   templateUrl: './edit-blogpost.html',
   styleUrl: './edit-blogpost.css'
 })
@@ -40,6 +42,7 @@ export class EditBlogpost implements OnInit, OnDestroy {
   UpdateBlogPostSubscription?: Subscription;
   getblogPostByIDSubscription?: Subscription;
    DeleteblogPostByIDSubscription?: Subscription;
+   IsImageSelectorOpen: boolean = false;
   
   constructor (private route : ActivatedRoute,
                 private blogPostService : BlogPostService,
@@ -126,6 +129,17 @@ export class EditBlogpost implements OnInit, OnDestroy {
    }
       
      
+  }
+
+
+  OpenImageSelector() : void
+  {
+    this.IsImageSelectorOpen = true;
+  }
+
+  CloseImageSelector()
+  : void{
+    this.IsImageSelectorOpen = false;
   }
 
 OnDelete() : void

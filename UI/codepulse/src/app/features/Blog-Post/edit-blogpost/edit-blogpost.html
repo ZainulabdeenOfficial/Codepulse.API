@@ -41,7 +41,9 @@
         </div>
 
         <div class="mt-3">
-            <label for="FeaturedImageUrl" class="form-label">Featured Image Url</label>
+            <label for="FeaturedImageUrl" class="form-label">Featured Image Url
+                <button type="button" class="btn btn-light" (click)="OpenImageSelector()">select Images</button>
+            </label>
             @if (model.featuredImageUrl !=''){
                 <div>
                          <img [src]="model.featuredImageUrl" alt="" height="100" class="my-2">
@@ -50,6 +52,7 @@
          
          <input type="text" id="FeaturedImageUrl" class="form-control" placeholder="Enter Featured Image Url"
                 required [(ngModel)]="model.featuredImageUrl" name="featuredImageUrl">
+
         </div>
 
         <div class="mt-3">
@@ -92,5 +95,14 @@
     }
 </div>
 
-<app-image-selector></app-image-selector>
+<div class="images-container-modal" [ngClass]="{'d-block': IsImageSelectorOpen, 'd-none': !IsImageSelectorOpen}">
+  <button 
+    type="button" 
+    class="btn btn-light" 
+    style="position: fixed; top: 10px; right: 10px;" 
+    (click)="CloseImageSelector()">
+    X
+  </button>
 
+  <app-image-selector></app-image-selector>
+</div>
