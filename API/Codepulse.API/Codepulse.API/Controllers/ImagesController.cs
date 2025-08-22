@@ -18,15 +18,10 @@ namespace Codepulse.API.Controllers
             this.iimageRepository = iimageRepository;
         }
 
-
-
-
-
         // Post: {apibaseurl}/api/Images
-
         [HttpPost]
-
-        public async Task<IActionResult> UploadImage([FromForm] IFormFile file, [FromForm] string filename,
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadImage(IFormFile file, [FromForm] string filename,
             [FromForm] string title)
         {
             ValidateFileUpload(file);
@@ -34,58 +29,48 @@ namespace Codepulse.API.Controllers
             if (ModelState.IsValid) {
 
                 // File Upload
-
-                var BloggImage = new BlogImage
+                var blogImage = new BlogImage
                 {
-                 
-                 FileExtention = Path.GetExtension(filename).ToLower(),
-                 Filename = filename,
-                 Title = title,
-                 DateCreated = DateTime.Now
+                    FileExtention = Path.GetExtension(file.FileName).ToLower(),
+                    Filename = string.IsNullOrWhiteSpace(filename) ? Path.GetFileNameWithoutExtension(file.FileName) : filename,
+                    Title = title,
+                    DateCreated = DateTime.Now
                 };
 
-                BloggImage =   await iimageRepository.Upload(file, BloggImage);
+                blogImage = await iimageRepository.Upload(file, blogImage);
 
                 // Convert domain model to dto
                 var response = new BlogImageDto
                 {
-                   id = BloggImage.id,
-                   Title = BloggImage.Title,
-                   DateCreated = BloggImage.DateCreated,
-                   FileExtention = BloggImage.FileExtention,
-                   Filename = BloggImage.Filename,
-                   Url = BloggImage.Url,
+                    id = blogImage.id,
+                    Title = blogImage.Title,
+                    DateCreated = blogImage.DateCreated,
+                    FileExtention = blogImage.FileExtention,
+                    Filename = blogImage.Filename,
+                    Url = blogImage.Url,
                 };
 
-                return Ok (BloggImage);
-
+                return Ok(response);
             }
-
             else
             {
                 return BadRequest(ModelState);
             }
-
-
-
-
         }
 
         private void ValidateFileUpload(IFormFile file)
         {
-            var allowEdextentions = new string[] { ".jpg", ".png", "jpeg" };
+            var allowEdextentions = new string[] { ".jpg", ".png", ".jpeg" };
 
             if (!allowEdextentions.Contains(Path.GetExtension(file.FileName).ToLower()))
             {
                 ModelState.AddModelError("file", "Unsupport File Format");
-                
             }
 
-            if (file.Length>10485760)
+            if (file.Length > 10485760)
             {
                 ModelState.AddModelError("file", "File Size cannot be more than 10 MB");
             }
-
         }
 
     }
