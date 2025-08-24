@@ -2,6 +2,7 @@
 using Codepulse.API.Models.Domain;
 using Codepulse.API.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Codepulse.API.Repositories.Implementation
 {
@@ -17,6 +18,12 @@ namespace Codepulse.API.Repositories.Implementation
             this.httpContextAccessor = httpContextAccessor;
             this.dbContext = dbContext;
         }
+
+        public async Task<IEnumerable<BlogImage>> GetAll()
+        {
+           return  await dbContext.BlogImages.ToListAsync();
+        }
+
         public async Task<BlogImage> Upload(IFormFile file, BlogImage blogImage)
         {
             // Upload Image to api -Images

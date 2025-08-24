@@ -32,7 +32,7 @@ UploadImage() : void
  if (this.file && this.filename!=='' &&  this.title!=='')
 {
   // Image service to Upload Image
-  this.imageService.UploadImage(this.filename,this.title).subscribe({
+  this.imageService.UploadImage(this.file!, this.filename!, this.title!).subscribe({
     next : (response) => {
       console.log(response);
     }

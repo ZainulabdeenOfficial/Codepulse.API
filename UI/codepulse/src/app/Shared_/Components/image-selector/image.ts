@@ -11,7 +11,7 @@ export class Image {
 
   constructor( private http:HttpClient) { }
 
-  UploadImage(file:File, filename:string, title:string) : Observable<BlogImage>
+  UploadImage(file:File, filename:string,title:string) : Observable<BlogImage>
   {
 
     const formdata = new FormData();
