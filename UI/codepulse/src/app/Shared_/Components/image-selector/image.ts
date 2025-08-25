@@ -7,9 +7,14 @@ import { environment } from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class Image {
+export class ImageService {
 
   constructor( private http:HttpClient) { }
+
+
+  getAllImages(): Observable<BlogImage[]> {
+    return this.http.get<BlogImage[]>(`${environment.ApiBaseUrl}/api/images`);
+  }
 
   UploadImage(file:File, filename:string,title:string) : Observable<BlogImage>
   {
@@ -21,5 +26,7 @@ export class Image {
     
      return  this.http.post<BlogImage>(`${environment.ApiBaseUrl}/api/images`, formdata);
   }
+
+
 
 }
