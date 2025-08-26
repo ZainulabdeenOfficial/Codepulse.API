@@ -4,6 +4,9 @@ import { Observable, Subscription } from 'rxjs';
 import { BlogPostService } from '../Services/blog-post';
 import { response } from 'express';
 import { BlogPost } from '../models/add-blog-post.model';
+// Update the import path below to the correct location of blog-images.model.ts
+// Update the import path below to the correct location of blog-image.model.ts
+import { BlogImage } from '../../../Shared_/Components/image-selector/models/blog-images.model';
 import { BlogPosts } from '../models/blog-post.model';
 import { Categorey } from '../../Cetagorey/models/Cetagorey.model';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +16,7 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
 import { UpdateBlogPost } from '../models/update-Blog-Post.model';
 import { ImageSelector } from "../../../Shared_/Components/image-selector/image-selector";
 import { NgClass } from '@angular/common';
+import { ImageService } from '../../../Shared_/Components/image-selector/image';
 
 
 @Component({
@@ -43,61 +47,65 @@ export class EditBlogpost implements OnInit, OnDestroy {
   getblogPostByIDSubscription?: Subscription;
    DeleteblogPostByIDSubscription?: Subscription;
    IsImageSelectorOpen: boolean = false;
+
+   ImageSelectSubscription?: Subscription;
   
   constructor (private route : ActivatedRoute,
                 private blogPostService : BlogPostService,
                 private CetagoreyService : Cetagorey,
-                private router: Router
+                private router: Router, private imageService : ImageService
   ){
 
   }
   
   
   ngOnInit(): void {
-      this.Cetagories$ = this.CetagoreyService.GetAllCategorey()
+    this.Cetagories$ = this.CetagoreyService.GetAllCategorey();
 
-
-
-    this.routeSubcription = this.route.params.subscribe({
-      next:(params)=>{
-      this.id = params['id'];
-
-    // Get Blog Post by ID
-    if (this.id) {
-
-   this.getblogPostByIDSubscription  =   this.blogPostService.getblogpostByID(this.id).subscribe({
-       next: (response: BlogPosts) => {
-             console.log('🔍 API Response:', response);
-             console.log('📂 Raw Categories:', response.cetagories);
-             
-             // Map BlogPosts response to BlogPost model
-             this.model = {
-               title: response.title,
-               shortDescription: response.shortDescription,
-               content: response.content,
-               author: response.author,
-               publishedDate: response.publishedDate,
-               isVisible: response.isVisible,
-               urlHandle: response.urlHandle,
-               featuredImageUrl: response.featuredImageUrl,
-               Categoires: response.cetagories?.map((x=>x.id)) || []
-             };
-             
-             // Ensure all IDs are strings for proper matching with option values
-             this.selectedCetagories = response.cetagories?.map((x => String(x.id))) || [];
-             
-             console.log('✅ Mapped Model:', this.model);
-             console.log('📋 Selected Categories (as strings):', this.selectedCetagories);
-             console.log('🔍 Category data types:', response.cetagories?.map(x => ({id: x.id, type: typeof x.id})));
-       },
-       error: (error) => {
-         console.error('❌ Error fetching blog post:', error);
-       }
-      });
-    }
-    }
+    // Subscribe to image selection ONCE
+    this.ImageSelectSubscription = this.imageService.onSelectImage().subscribe({
+      next: (image: BlogImage) => {
+        if (this.model) {
+          this.model.featuredImageUrl = image.Url;
+          this.IsImageSelectorOpen = false;
+        }
+      },
+      error: (err) => {
+        console.error('Error selecting image:', err);
+      }
     });
 
+    this.routeSubcription = this.route.params.subscribe({
+      next: (params) => {
+        this.id = params['id'];
+        // Get Blog Post by ID
+        if (this.id) {
+          this.getblogPostByIDSubscription = this.blogPostService.getblogpostByID(this.id).subscribe({
+            next: (response: BlogPosts) => {
+              console.log('🔍 API Response:', response);
+              console.log('📂 Raw Categories:', response.cetagories);
+              // Map BlogPosts response to BlogPost model
+              this.model = {
+                title: response.title,
+                shortDescription: response.shortDescription,
+                content: response.content,
+                author: response.author,
+                publishedDate: response.publishedDate,
+                isVisible: response.isVisible,
+                urlHandle: response.urlHandle,
+                featuredImageUrl: response.featuredImageUrl,
+                Categoires: response.cetagories?.map((x => x.id)) || []
+              };
+              // Ensure all IDs are strings for proper matching with option values
+              this.selectedCetagories = response.cetagories?.map((x => String(x.id))) || [];
+            },
+            error: (error) => {
+              console.error('❌ Error fetching blog post:', error);
+            }
+          });
+        }
+      }
+    });
   }
   onSubmit() {
    // Convert model to request  object
@@ -167,6 +175,7 @@ OnDelete() : void
     this.UpdateBlogPostSubscription?.unsubscribe();
     this.getblogPostByIDSubscription?.unsubscribe();
     this.DeleteblogPostByIDSubscription?.unsubscribe();
+    this.ImageSelectSubscription?.unsubscribe();
   }
 
 }

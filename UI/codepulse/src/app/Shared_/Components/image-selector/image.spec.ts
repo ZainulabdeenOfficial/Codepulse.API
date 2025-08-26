@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Image } from './image';
+// import { Image } from './image'; // Removed because './image' has no exported member 'Image'
 
 describe('Image', () => {
-  let service: Image;
+  let service: typeof Image;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

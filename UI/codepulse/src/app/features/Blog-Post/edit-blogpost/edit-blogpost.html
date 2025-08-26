@@ -1,106 +1,158 @@
-<div class="Container">
-    <h1 class="mt-3">Edit BlogPost</h1>
-@if (model) {
+<div class="container">
+  <h1 class="mt-3">Edit Blog Post</h1>
 
+  @if (model) {
     <form #form="ngForm" (ngSubmit)="onSubmit()">
-        <div class="mt-2 mb-5">
-            <div class="mt-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" id="title" class="form-control" placeholder="Enter title" required [(ngModel)]="model.title" name="title">
-            </div>
-         </div>
 
-
+      <!-- Title -->
+      <div class="mt-2 mb-5">
         <div class="mt-3">
-            <label for="UrlHandle" class="form-label">Url Handle</label>
-            <input type="text" id="UrlHandle" class="form-control" placeholder="Enter Url Handle" required [(ngModel)]="model.urlHandle" name="urlHandle">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" 
+                 id="title" 
+                 class="form-control" 
+                 placeholder="Enter title" 
+                 required 
+                 [(ngModel)]="model.title" 
+                 name="title">
         </div>
+      </div>
 
+      <!-- Url Handle -->
+      <div class="mt-3">
+        <label for="urlHandle" class="form-label">Url Handle</label>
+        <input type="text" 
+               id="urlHandle" 
+               class="form-control" 
+               placeholder="Enter Url Handle" 
+               required 
+               [(ngModel)]="model.urlHandle" 
+               name="urlHandle">
+      </div>
 
+      <!-- Short Description -->
+      <div class="mt-3">
+        <label for="shortDescription" class="form-label">Short Description</label>
+        <input type="text" 
+               id="shortDescription" 
+               class="form-control" 
+               placeholder="Enter Short Description" 
+               required 
+               [(ngModel)]="model.shortDescription" 
+               name="shortDescription">
+      </div>
 
-
-        <div class="mt-3">
-            <label for="ShortDesciption" class="form-label">Short Desciption</label>
-            <input type="text" id="ShortDesciption" class="form-control" placeholder="Enter Short Desciption" required [(ngModel)]="model.shortDescription" name="shortDescription">
+      <!-- Content with Preview -->
+      <div class="mt-3">
+        <label for="content" class="form-label">Content</label>
+        <div class="d-flex flex-row">
+          <div class="col-6 p-2">
+            <textarea id="content" name="content" style="height:350px;max-height:350px;" class="form-control" [(ngModel)]="model.content"></textarea>
+          </div>
+          <div class="col-6 p-2" style="max-height: 350px; overflow-y: scroll;">
+            <markdown [data]="model.content"></markdown>
+          </div>
         </div>
+      </div>
 
+      <!-- Featured Image -->
+      <div class="mt-3">
+        <label for="featuredImageUrl" class="form-label">
+          Featured Image Url
+          <button type="button" 
+                  class="btn btn-light" 
+                  (click)="OpenImageSelector()">
+            Select Images
+          </button>
+        </label>
 
+        @if (model.featuredImageUrl && model.featuredImageUrl !== '') {
+          <div>
+            <img [src]="model.featuredImageUrl" 
+                 alt="Featured Image" 
+                 height="100" 
+                 class="my-2">
+          </div>
+        }
 
+        <input type="text" 
+               id="featuredImageUrl" 
+               class="form-control" 
+               placeholder="Enter Featured Image Url"
+               required 
+               [(ngModel)]="model.featuredImageUrl" 
+               name="featuredImageUrl">
+      </div>
 
-        <div class="mt-3">
-            <label for="Content" class="form-label">Content</label>
-           <div class="d-flex flex-row">
-            <div class="col-6 p-2">
-                <textarea name="Content" id="Content" style="height: 350px;max-height: 350px;" class="form-control" [(ngModel)]="model.content"></textarea>
-            </div>
-            <div class="col-6 p-2" style="max-height: 350px;overflow-y: scroll;">
-                <markdown [data]="model.content"></markdown>
-            </div>
+      <!-- Published Date -->
+      <div class="mt-3">
+        <label for="publishedDate" class="form-label">Published Date</label>
+        <input type="date" 
+               id="publishedDate" 
+               class="form-control" 
+               required 
+               [(ngModel)]="model.publishedDate" 
+               name="publishedDate">
+      </div>
 
-           </div>
-        </div>
+      <!-- Author -->
+      <div class="mt-3">
+        <label for="author" class="form-label">Author</label>
+        <input type="text" 
+               id="author" 
+               class="form-control" 
+               placeholder="Enter Author Name" 
+               required 
+               [(ngModel)]="model.author" 
+               name="author">
+      </div>
 
-        <div class="mt-3">
-            <label for="FeaturedImageUrl" class="form-label">Featured Image Url
-                <button type="button" class="btn btn-light" (click)="OpenImageSelector()">select Images</button>
-            </label>
-            @if (model.featuredImageUrl !=''){
-                <div>
-                         <img [src]="model.featuredImageUrl" alt="" height="100" class="my-2">
-                </div>
+      <!-- Is Visible -->
+      <div class="form-check m-3">
+        <input class="form-check-input" 
+               type="checkbox" 
+               id="isVisible" 
+               [(ngModel)]="model.isVisible" 
+               name="isVisible">
+        <label class="form-check-label" for="isVisible">Is Visible?</label>
+      </div>
+
+      <!-- Categories -->
+      <div class="mt-3">
+        <label for="categories" class="form-label">Categories</label>
+        @if (Cetagories$ | async; as categories) {
+          <select class="form-control" 
+                  name="categories" 
+                  id="categories" 
+                  multiple 
+                  [(ngModel)]="selectedCetagories">
+            @for (category of categories; track category.id) {
+              <option [value]="category.id">{{ category.name }}</option>
             }
-         
-         <input type="text" id="FeaturedImageUrl" class="form-control" placeholder="Enter Featured Image Url"
-                required [(ngModel)]="model.featuredImageUrl" name="featuredImageUrl">
+          </select>
+        }
+      </div>
 
-        </div>
-
-        <div class="mt-3">
-            <label for="PublishedDate" class="form-label">Published Date</label>
-            <input type="date" id="PublishedDate" class="form-control" required [(ngModel)]="model.publishedDate" name="publishedDate">
-        </div>
-
-        <div class="mt-3">
-            <label for="Author" class="form-label">Author</label>
-            <input type="text" id="Author" class="form-control" placeholder="Enter Author Name" required [(ngModel)]="model.author" name="author">
-        </div>
-
-        <div class="form-check m-3">
-            <input class="form-check-input" type="checkbox" id="IsVisible" [(ngModel)]="model.isVisible" name="isVisible">
-            <label class="form-check-label" for="IsVisible">
-                IsVisible?
-            </label>
-        </div>
-
-        <div class="mt-3">
-            <label for="categories" class="form-label">Categories</label>
-            
-            
-            
-            
-            @if (Cetagories$ | async; as Cetagories) {
-                <select class="form-control" name="categories" id="categories" multiple [(ngModel)]="selectedCetagories">
-                    @for (cetagory of Cetagories; track cetagory.id) {
-                        <option [value]="cetagory.id">{{cetagory.name}}</option>
-                    }
-                </select>
-            }
-        </div>
-
+      <!-- Actions -->
       <div class="m-3 d-flex">
-  <button type="submit" class="btn btn-primary">Save</button>
-  <button type="button" class="btn btn-danger ms-3" (click)="OnDelete()">Delete</button>
-</div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" 
+                class="btn btn-danger ms-3" 
+                (click)="OnDelete()">
+          Delete
+        </button>
+      </div>
     </form>
-    }
+  }
 </div>
 
-<div class="images-container-modal" [ngClass]="{'d-block': IsImageSelectorOpen, 'd-none': !IsImageSelectorOpen}">
-  <button 
-    type="button" 
-    class="btn btn-light" 
-    style="position: fixed; top: 10px; right: 10px;" 
-    (click)="CloseImageSelector()">
+<!-- Image Selector Modal -->
+<div class="images-container-modal" 
+     [ngClass]="{ 'd-block': IsImageSelectorOpen, 'd-none': !IsImageSelectorOpen }">
+  <button type="button" 
+          class="btn btn-light" 
+          style="position: fixed; top: 10px; right: 10px;" 
+          (click)="CloseImageSelector()">
     X
   </button>
 
