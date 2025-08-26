@@ -1,17 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ImageService } from './image';
-import { response } from 'express';
 import { Observable } from 'rxjs';
 import { BlogImage } from './models/blog-images.model';
-import { AsyncPipe } from '@angular/common';
-import { Console } from 'console';
+import { CommonModule } from '@angular/common';
+
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-image-selector',
-  imports: [FormsModule,AsyncPipe],
+  imports: [CommonModule, FormsModule, ToastModule, ButtonModule],
+  providers: [MessageService],
   templateUrl: './image-selector.html',
-  styleUrl: './image-selector.css'
+  styleUrls: ['./image-selector.css']
 })
 export class ImageSelector implements OnInit {
   private file?: File;
@@ -52,8 +55,18 @@ export class ImageSelector implements OnInit {
     
   }
 
+  show(): void {
+    // placeholder for p-button click handler used in template
+    // implement any behavior if needed
+    console.log('p-button clicked');
+  }
+
   private getImages() {
     this.image$ = this.imageService.getAllImages();
     
+  }
+
+  trackById(index: number, item: BlogImage) {
+    return item?.id;
   }
 }
