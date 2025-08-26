@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { BlogImage } from './models/blog-images.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { url } from 'inspector';
 
 @Injectable({
   providedIn: 'root'
@@ -24,13 +25,14 @@ export class ImageService {
     return this.http.get<BlogImage[]>(`${environment.ApiBaseUrl}/api/images`);
   }
 
-  UploadImage(file:File, filename:string,title:string) : Observable<BlogImage>
+  UploadImage(file:File, filename:string,title:string,) : Observable<BlogImage>
   {
 
     const formdata = new FormData();
     formdata.append("file", file);
     formdata.append("filename", filename);
     formdata.append("title", title);
+    
     
      return  this.http.post<BlogImage>(`${environment.ApiBaseUrl}/api/images`, formdata);
   }

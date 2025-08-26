@@ -17,6 +17,7 @@ export class ImageSelector implements OnInit {
   private file?: File;
   filename?: string = '';
   title?: string = '';
+  Url ? : string = '';
   
   image$?: Observable<BlogImage[]>;
 
@@ -46,7 +47,8 @@ export class ImageSelector implements OnInit {
 
   SelectImage(image: BlogImage): void {
     this.imageService.SelectImage(image);
-    console.log('Selected Image',image.Url);
+  console.log('Selected Image Url',image.Url);
+   
     
   }
 

@@ -1,29 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
 import { BlogPost } from '../models/add-blog-post.model';
 import { BlogPosts } from '../models/blog-post.model';
 import { Route, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { BlogPostService } from '../Services/blog-post';
 import { MarkdownComponent } from 'ngx-markdown';
 import { Cetagorey } from '../../Cetagorey/Services/cetagorey';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Categorey } from '../../Cetagorey/models/Cetagorey.model';
-import { AsyncPipe } from '@angular/common';
+import { CommonModule, AsyncPipe } from '@angular/common';
+import { ImageSelector } from '../../../Shared_/Components/image-selector/image-selector';
+import { ImageService } from '../../../Shared_/Components/image-selector/image';
+
 
 
 @Component({
   selector: 'app-add-blogpost',
-  imports: [FormsModule, MarkdownComponent, AsyncPipe],
+  imports: [CommonModule, FormsModule, MarkdownComponent, AsyncPipe, ImageSelector],
   templateUrl: './add-blogpost.html',
   styleUrl: './add-blogpost.css'
 })
-export class AddBlogpost implements OnInit {
+export class AddBlogpost implements OnInit, OnDestroy {
 
   model : BlogPost;
   Cetagories$ ? : Observable<Categorey[]>;
+  IsImageSelectorOpen: boolean = false;
+  ImageSelectorSubscripton? : Subscription;
+  
   
   constructor (private blogPostService: BlogPostService, 
-    private router: Router, private CetogreyService : Cetagorey
+    private router: Router, private CetogreyService : Cetagorey, private imageService : ImageService
   ) {
     this.model = {
       title: '',
@@ -37,8 +43,15 @@ export class AddBlogpost implements OnInit {
       Categoires: []
     }
   }
+  
   ngOnInit(): void {
      this.Cetagories$   = this.CetogreyService.GetAllCategorey()
+     this.imageService.onSelectImage().subscribe({
+      next : (selectedimage) => {
+  this.model.featuredImageUrl = selectedimage.Url;
+        this.IsImageSelectorOpen = false;
+      }
+     })
   }
 
   onSubmit(): void {
@@ -58,6 +71,19 @@ export class AddBlogpost implements OnInit {
         }
       }
     });
+  }
+  OpenImageSelector() : void
+  {
+    this.IsImageSelectorOpen = true;
+  }
+
+  CloseImageSelector()
+  : void{
+    this.IsImageSelectorOpen = false;
+  }
+
+  ngOnDestroy(): void {
+    this.ImageSelectorSubscripton?.unsubscribe();
   }
 
 }
