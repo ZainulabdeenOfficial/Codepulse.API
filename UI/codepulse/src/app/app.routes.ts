@@ -5,9 +5,11 @@ import { EditCetagorey } from './features/Cetagorey/edit-cetagorey/edit-cetagore
 import { BlogpostList } from './features/Blog-Post/blogpost-list/blogpost-list';
 import { AddBlogpost } from './features/Blog-Post/add-blogpost/add-blogpost';
 import { EditBlogpost } from './features/Blog-Post/edit-blogpost/edit-blogpost';
+import { Home } from './features/Public/home/home';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/admin/category', pathMatch: 'full' },
+  {path : '', component:Home},
+  { path: '', redirectTo: '/src/app/features/Public/home', pathMatch: 'full' },
   { path: 'admin/category', component: CetagoreyListComponent },
   { path: 'admin/category/add', component: AddCategorey },
   {path :'admin/category/:id', component: EditCetagorey},
@@ -16,7 +18,7 @@ export const routes: Routes = [
   {path:'admin/Blogpost/add',component:AddBlogpost},
 
   {path: 'admin/Blogpost/:id', component: EditBlogpost},
-
+  
   
 ];
 
