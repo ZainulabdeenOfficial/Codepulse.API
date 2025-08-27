@@ -13,8 +13,10 @@ namespace Codepulse.API.Repositories.Interface
     Task <BlogPost ?> UpdateAysnc(BlogPost blogPost);
 
     Task <BlogPost ?> DeleteAysnc(Guid id);
-     
 
-     
+    Task<BlogPost ?> GetByUrlHandleAsync(string urlHandle);
+
+
+
     }
 }

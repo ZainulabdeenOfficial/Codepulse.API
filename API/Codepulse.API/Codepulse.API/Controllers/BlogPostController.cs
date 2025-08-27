@@ -121,6 +121,9 @@ namespace Codepulse.API.Controllers
 
         }
 
+
+
+
         //Get : apibaseurl/api/blogpost{id}
 
         [HttpGet("{id:guid}")]
@@ -157,6 +160,46 @@ namespace Codepulse.API.Controllers
             };
             return Ok(response);
         }
+
+
+        //Get : apibaseurl/api/blogpost/ByUrl/{urlhandle}
+        [HttpGet]
+        [Route("ByUrl/{urlhandle}")]
+        public async Task <IActionResult> GetAllBlogpostByUrlHanlde([FromRoute]string urlhandle)
+        {
+            // Get Blogpost from reposties
+          var Blogpost =    await blogPostRepository.GetByUrlHandleAsync(urlhandle);
+            if (Blogpost == null)
+            {
+                return NotFound();
+            }
+            var response = new BlogPostDto
+            {
+                ID = Blogpost.ID,
+                Title = Blogpost.Title,
+                ShortDescription = Blogpost.ShortDescription,
+                Content = Blogpost.Content,
+                FeaturedImageUrl = Blogpost.FeaturedImageUrl,
+                UrlHandle = Blogpost.UrlHandle,
+                PublishedDate = Blogpost.PublishedDate,
+                Author = Blogpost.Author,
+                IsVisible = Blogpost.IsVisible,
+
+                Cetagories = Blogpost.Cetagories.Select(x => new CetogreyDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle,
+                }).ToList(),
+
+
+            };
+            return Ok(response);
+
+
+
+        }
+
         //put {apibaseurl}/api/blogpost/{id}
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateBlogpostbyID([FromRoute] Guid id, UpdateBlogpostRequestDto request)
