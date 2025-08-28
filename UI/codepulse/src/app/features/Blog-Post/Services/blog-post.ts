@@ -25,6 +25,11 @@ getblogpostByID(id: string): Observable<BlogPosts> {
   return this.http.get<BlogPosts>(`${environment.ApiBaseUrl}/api/BlogPost/${id}`);
 }
 
+getblogpostByUrlHandle(urlHandle: string): Observable<BlogPosts> {
+  // Backend exposes a ByUrl route for URL handle lookup
+  return this.http.get<BlogPosts>(`${environment.ApiBaseUrl}/api/BlogPost/ByUrl/${urlHandle}`);
+}
+
 UpdateBlogPost(id: string, UpdateBlogPost: UpdateBlogPost): Observable<BlogPosts> {
   return this.http.put<BlogPosts>(`${environment.ApiBaseUrl}/api/BlogPost/${id}`, UpdateBlogPost);
 
@@ -32,6 +37,8 @@ UpdateBlogPost(id: string, UpdateBlogPost: UpdateBlogPost): Observable<BlogPosts
 DeleteBlogpost(id:string):Observable<BlogPosts>{
   return this.http.delete<BlogPosts>(`${environment.ApiBaseUrl}/api/BlogPost/${id}`);
 }
+
+
 
 }
 

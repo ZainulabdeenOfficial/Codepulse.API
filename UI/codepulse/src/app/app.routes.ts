@@ -9,9 +9,9 @@ import { Home } from './features/Public/home/home';
 import { BlogsDeatiles } from './features/Public/blogs-deatiles/blogs-deatiles';
 
 export const routes: Routes = [
-  {path : '', component:Home},
-  { path: '', redirectTo: '/src/app/features/Public/home', pathMatch: 'full' },
-  {path:'/blog/:urlHandle', component:BlogsDeatiles},
+  { path: '', component: Home },
+  // Redirect removed: use the empty path component above instead of redirecting to a file path
+  { path: 'blog/:urlHandle', component: BlogsDeatiles },
   { path: 'admin/category', component: CetagoreyListComponent },
   { path: 'admin/category/add', component: AddCategorey },
   {path :'admin/category/:id', component: EditCetagorey},
