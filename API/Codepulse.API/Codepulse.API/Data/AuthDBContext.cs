@@ -6,7 +6,7 @@ namespace Codepulse.API.Data
 {
     public class AuthenticationDbContext : IdentityDbContext
     {
-        public AuthenticationDbContext(DbContextOptions options) : base(options)
+        public AuthenticationDbContext(DbContextOptions <AuthenticationDbContext> options) : base(options)
         {
         }
 
