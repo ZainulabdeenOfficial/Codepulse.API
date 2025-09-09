@@ -28,6 +28,7 @@ builder.Services.AddDbContext<AuthenticationDbContext>(options => {
 builder.Services.AddScoped<ICategoeryRepository, CetagoryRespostiries>();
 builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 builder.Services.AddScoped<IimageRepository, ImageRepository>();
+builder.Services.AddScoped<ITokenReposistory, TokenReposistory>();
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddRoles<IdentityRole>()
