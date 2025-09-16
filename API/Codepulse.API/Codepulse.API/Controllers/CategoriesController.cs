@@ -3,6 +3,7 @@ using Codepulse.API.Models.Domain;
 using Codepulse.API.Models.DTO;
 using Codepulse.API.Repositories.Implementation;
 using Codepulse.API.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
@@ -31,6 +32,7 @@ namespace Codepulse.API.Controllers
         //post Method: localhost:5000/api/categories
 
         [HttpPost]
+        [Authorize(Roles = "Writer")]
 
         public async Task<IActionResult> CreateCatogrey([FromBody] CreateCategoryRequestDto request)
         {
@@ -63,6 +65,7 @@ namespace Codepulse.API.Controllers
 
         //Get Method: localhost:5000/api/categories
         [HttpGet]
+       
         public async Task<IActionResult> GetAllCategories()
         {
             var Cetagories = await categoeryRepository.GetAllAsync();
@@ -110,6 +113,7 @@ namespace Codepulse.API.Controllers
 
         //put method : localhost:5000/api/categories/{id}
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Writer")]
 
         public async Task<IActionResult> EditCetagorey([FromRoute] Guid id, updateCetogreyRequestDto request) {
 
@@ -140,6 +144,7 @@ namespace Codepulse.API.Controllers
 
         //Delete Method: localhost:5000/api/categories/{id}
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Writer")]
 
         public async Task<IActionResult> DeleteCetogery([FromRoute] Guid id )
         {
