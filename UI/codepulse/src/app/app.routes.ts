@@ -7,6 +7,7 @@ import { AddBlogpost } from './features/Blog-Post/add-blogpost/add-blogpost';
 import { EditBlogpost } from './features/Blog-Post/edit-blogpost/edit-blogpost';
 import { Home } from './features/Public/home/home';
 import { BlogsDeatiles } from './features/Public/blogs-deatiles/blogs-deatiles';
+import { Login } from './features/Auth/login/login';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'admin/category/add', component: AddCategorey },
   {path :'admin/category/:id', component: EditCetagorey},
   {path:'admin/Blogpost',component:BlogpostList},
+  {path : 'login',component:Login},
 
   {path:'admin/Blogpost/add',component:AddBlogpost},
 
