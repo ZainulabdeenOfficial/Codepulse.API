@@ -1,6 +1,8 @@
 import { Component, NgModule } from '@angular/core';
 import { LoginRequest } from '../models/login-request.model';
 import { FormsModule } from '@angular/forms';
+import { Auth } from '../services/auth';
+import { response } from 'express';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ export class Login {
 
   model : LoginRequest;
 
-  constructor(){
+  constructor(private authService:Auth){
     this.model = {
       email: '',
       password: ''
@@ -21,7 +23,12 @@ export class Login {
   }
 
   onSubmit(){
-    console.log(this.model);
+    this.authService.login(this.model).subscribe({
+      next:(response)=>{
+        console.log('Login successful',response);
+      }
+    })
+   
   }
 
 }
