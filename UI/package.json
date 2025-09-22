@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "ngx-cookie-service": "^20.1.0"
+  }
+}
