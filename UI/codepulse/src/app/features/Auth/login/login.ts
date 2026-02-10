@@ -1,41 +1,41 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoginRequest } from '../models/login-request.model';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '../services/auth';
-import { response } from 'express';
-import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { AuthStateService } from '../../../shared/services/auth-state.service';
+
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,],
+  imports: [FormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class Login {
 
-  model : LoginRequest;
+  model: LoginRequest;
 
-  constructor(private authService:Auth, private CookiesService:CookieService , private router:Router) {
+  constructor(
+    private authService: Auth,
+    private authStateService: AuthStateService,
+    private router: Router
+  ) {
     this.model = {
       email: '',
       password: ''
     }
-
   }
 
-  onSubmit(){
+  onSubmit() {
     this.authService.login(this.model).subscribe({
-      next:(response)=>{
-        // set auth cookies 
+      next: (response) => {
+        // Set auth token using auth state service
+        this.authStateService.setUser(response.token);
 
-        this.CookiesService.set('authorization',`Bearer ${response.token}`,undefined,'/',undefined,true,'Strict');
-
-        // Reddirect back to Home page
-        this.router.navigate(['/ ']);
-
+        // Redirect back to Home page
+        this.router.navigate(['/']);
       }
     })
-   
   }
 
 }
